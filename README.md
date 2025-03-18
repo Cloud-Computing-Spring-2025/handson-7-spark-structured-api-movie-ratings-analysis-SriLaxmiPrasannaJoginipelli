@@ -161,9 +161,9 @@ You will work with a dataset containing information about **100+ users** who rat
 
 ## **Findings**
 
-**Churn Risk Users:** Successfully identified 11 churn-risk users who have canceled subscriptions and low watch time.
-**Binge-Watching Patterns:** These statistics reveal that seniors have the highest proportion of binge-watchers, followed closely by adults and teens.
-**Movie Ratings Trends:** The data shows a fluctuating pattern of movie consumption over the years, with 2020 seeing the highest number of movies watched (19), followed by 2018 and 2022.
+- **Churn Risk Users:** Successfully identified 11 churn-risk users who have canceled subscriptions and low watch time.
+- **Binge-Watching Patterns:** These statistics reveal that seniors have the highest proportion of binge-watchers, followed closely by adults and teens.
+- **Movie Ratings Trends:** The data shows a fluctuating pattern of movie consumption over the years, with 2020 seeing the highest number of movies watched (19), followed by 2018 and 2022.
 
 ## **Outputs**
 
