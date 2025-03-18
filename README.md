@@ -1,5 +1,17 @@
 # Movie Ratings Analysis
 
+## **Overview**
+
+In this assignment, you will leverage Spark Structured APIs to analyze a dataset containing employee information from various departments within an organization. Your goal is to extract meaningful insights related to employee satisfaction, engagement, concerns, and job titles. This exercise is designed to enhance your data manipulation and analytical skills using Spark's powerful APIs.
+
+## **Objectives**
+
+By the end of this assignment, you should be able to:
+
+1. **Data Loading and Preparation**: Import and preprocess data using Spark Structured APIs.
+2. **Data Analysis**: Perform complex queries and transformations to address specific business questions.
+3. **Insight Generation**: Derive actionable insights from the analyzed data.
+
 ## **Prerequisites**
 
 Before starting the assignment, ensure you have the following software installed and properly configured on your machine:
@@ -54,11 +66,6 @@ MovieRatingsAnalysis/
 
 
 
-
-
-
-
-
 - **input/**: Contains the `movie_ratings_data.csv` dataset.
 - **outputs/**: Directory where the results of each task will be saved.
 - **src/**: Contains the individual Python scripts for each task.
@@ -93,54 +100,38 @@ You can run the analysis tasks either locally or using Docker.
    - `churn_risk_users.csv`
    - `movie_watching_trends.csv`
 
-#### **b. Running with Docker (Optional)**
+#### **Approach**
 
-1. **Start the Spark Cluster**:
-   ```bash
-   docker-compose up -d
-   ```
+1. Data Loading
+Objective: Load the movie ratings data into a Spark DataFrame for further analysis.
+Process:
+The movie ratings data is loaded from a CSV file using Spark's read.csv() method.
+A schema is defined explicitly to match the structure of the data, ensuring that each column is read correctly.
 
-2. **Access the Spark Master Container**:
-   ```bash
-   docker exec -it spark-master bash
-   ```
+2. Task 1: Identifying Binge-Watching Patterns
+Objective: Identify users who binge-watch content based on certain criteria.
+Process:
+Filter users who have watched more than a specified threshold.
+Aggregate the data to calculate the percentage of binge-watchers relative to the total users.
+The result includes binge-watcher counts and their percentage.
 
-3. **Navigate to the Spark Directory**:
-   ```bash
-   cd /opt/bitnami/spark/
-   ```
+3. Task 2: Identifying Churn-Risk Users
+Objective: Identify users with canceled subscriptions and low watch time (<100 minutes).
+Process:
+Filter users who have SubscriptionStatus = 'Canceled' and WatchTime < 100.
+Count the number of churn-risk users.
+Generate a result CSV containing the churn-risk user count.
 
-4. **Run Your PySpark Scripts Using `spark-submit`**:
-   ```bash
-   spark-submit src/task1_binge_watching_patterns.py
-   spark-submit src/task2_churn_risk_users.py
-   spark-submit src/task3_movie_watching_trends.py
-   ```
+4. Task 3: Movie Ratings Trends
+Objective: Analyze the trends of movie ratings over time, including top-rated movies per year and rating distributions.
+Process:
+Group data by WatchedYear and calculate the average rating per year.
+Identify the top-rated movies for each year.
+Generate a trend analysis based on average ratings and insights into rating distributions over time.
+   
 
-5. **Exit the Container**:
-   ```bash
-   exit
-   ```
-
-6. **Verify the Outputs**:
+8. **Verify the Outputs**:
    On your host machine, check the `outputs/` directory for the resulting files.
-
-7. **Stop the Spark Cluster**:
-   ```bash
-   docker-compose down
-   ```
-
-## **Overview**
-
-In this assignment, you will leverage Spark Structured APIs to analyze a dataset containing employee information from various departments within an organization. Your goal is to extract meaningful insights related to employee satisfaction, engagement, concerns, and job titles. This exercise is designed to enhance your data manipulation and analytical skills using Spark's powerful APIs.
-
-## **Objectives**
-
-By the end of this assignment, you should be able to:
-
-1. **Data Loading and Preparation**: Import and preprocess data using Spark Structured APIs.
-2. **Data Analysis**: Perform complex queries and transformations to address specific business questions.
-3. **Insight Generation**: Derive actionable insights from the analyzed data.
 
 ## **Dataset**
 
@@ -168,104 +159,28 @@ You will work with a dataset containing information about **100+ users** who rat
 
 
 
-### **Sample Data**
+## **Findings**
 
-Below is a snippet of the `movie_ratings_data.csv` to illustrate the data structure. Ensure your dataset contains at least 100 records for meaningful analysis.
+**Churn Risk Users:** Successfully identified 11 churn-risk users who have canceled subscriptions and low watch time.
+**Binge-Watching Patterns:** These statistics reveal that seniors have the highest proportion of binge-watchers, followed closely by adults and teens.
+**Movie Ratings Trends:** The data shows a fluctuating pattern of movie consumption over the years, with 2020 seeing the highest number of movies watched (19), followed by 2018 and 2022.
 
-```
-UserID,MovieID,MovieTitle,Genre,Rating,ReviewCount,WatchedYear,UserLocation,AgeGroup,StreamingPlatform,WatchTime,IsBingeWatched,SubscriptionStatus
-1,101,Inception,Sci-Fi,4.8,12,2022,US,Adult,Netflix,145,True,Active
-2,102,Titanic,Romance,4.7,8,2021,UK,Adult,Amazon,195,False,Canceled
-3,103,Avengers: Endgame,Action,4.5,15,2023,India,Teen,Disney+,180,True,Active
-4,104,The Godfather,Crime,4.9,20,2020,US,Senior,Amazon,175,False,Active
-5,105,Forrest Gump,Drama,4.8,10,2022,Canada,Adult,Netflix,130,True,Active
-...
-```
+## **Outputs**
 
-## **Assignment Tasks**
+**Task1**
 
-You are required to complete the following three analysis tasks using Spark Structured APIs. Ensure that your analysis is well-documented, with clear explanations and any relevant visualizations or summaries.
+![image](https://github.com/user-attachments/assets/0c09fa7d-2984-4472-8df8-7a3895096188)
 
-### **1. Identify Departments with High Satisfaction and Engagement**
+**Task2**
 
-**Objective:**
+![image](https://github.com/user-attachments/assets/8fe2c25f-b74c-413e-8da7-25d487fdc30b)
 
-Determine which movies have an average watch time greater than 100 minutes and rank them based on user engagement.
+**Task3**
 
-**Tasks:**
-
-- **Filter Movies**: Select movies that have been watched for more than 100 minutes on average.
-- **Analyze Average Watch Time**: Compute the average watch time per user for each movie.
-- **Identify Top Movies**: List movies where the average watch time is among the highest.
-
-
-**Expected Outcome:**
-
-A list of departments meeting the specified criteria, along with the corresponding percentages.
-
-**Example Output:**
-
-| Age Group   | Binge Watchers | Percentage |
-|-------------|----------------|------------|
-| Teen        | 195            | 45%        |
-| Adult       | 145            | 38%        |
-
----
-
-### **2. Identify Churn Risk Users**  
-
-**Objective:**  
-
-Find users who are **at risk of churn** by identifying those with **canceled subscriptions and low watch time (<100 minutes)**.
-
-**Tasks:**  
-
-- **Filter Users**: Select users who have `SubscriptionStatus = 'Canceled'`.  
-- **Analyze Watch Time**: Identify users with `WatchTime < 100` minutes.  
-- **Count At-Risk Users**: Compute the total number of such users.  
-
-**Expected Outcome:**  
-
-A count of users who **canceled their subscriptions and had low engagement**, highlighting **potential churn risks**.
-
-**Example Output:**  
-
-
-|Churn Risk Users                                  |	Total Users |
-|--------------------------------------------------|--------------|
-|Users with low watch time & canceled subscriptions|	350         |
+![image](https://github.com/user-attachments/assets/3c1c2ab6-d4ba-4db9-82e9-ce7d6c91c14a)
 
 
 
----
-
-### **3. Trend Analysis Over the Years**  
-
-**Objective:**  
-
-Analyze how **movie-watching trends** have changed over the years and find peak years for movie consumption.
-
-**Tasks:**  
-
-- **Group by Watched Year**: Count the number of movies watched in each year.  
-- **Analyze Trends**: Identify patterns and compare year-over-year growth in movie consumption.  
-- **Find Peak Years**: Highlight the years with the highest number of movies watched.  
-
-**Expected Outcome:**  
-
-A summary of **movie-watching trends** over the years, indicating peak years for streaming activity.
-
-**Example Output:**  
-
-| Watched Year | Movies watched |
-|--------------|----------------|
-| 2020         | 1200           |
-| 2021         | 1500           |
-| 2022         | 2100           |
-| 2023         | 2800           |
-
-
----
 
 ## **Grading Criteria**
 
